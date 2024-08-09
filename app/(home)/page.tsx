@@ -1,8 +1,27 @@
+"use client";
+
 import { useState } from "react";
 import NewPlanForm from "@/components/NewPlanForm";
 import { callOpenAIApi } from "@/lib/openai";
 import { Button } from "@/components/ui/button";
-import { toast, useToast } from "@/components/ui/use-toast";
+import HowItWorks from "@/components/home/HowItWorks";
+import Pricing from "@/components/home/Pricing";
+import Banner from "@/components/home/Banner";
+import PublicPlans from "@/components/home/PublicPlans";
+
+export default function Home() {
+  // Your component logic here, including any useState hooks
+
+  return (
+    <div className="scroll-m-5 w-full">
+      <Banner />
+      <HowItWorks />
+      <PublicPlans />
+      <Pricing />
+      {/* Add any other components or logic that uses state */}
+    </div>
+  );
+}
 
 export default function Home() {
   const [plan, setPlan] = useState(null);
