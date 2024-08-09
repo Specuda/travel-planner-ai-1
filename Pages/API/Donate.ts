@@ -7,7 +7,7 @@ if (!stripeSecretKey) {
 }
 
 const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2020-08-27",
+  apiVersion: "2023-10-16", // Update to the latest API version
 });
 
 // Your existing code for handling donations goes here
