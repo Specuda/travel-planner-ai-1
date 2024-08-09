@@ -1,33 +1,36 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import nodemailer from "nodemailer";
+import { NextApiRequest, NextApiResponse } from 'next';
+import nodemailer from 'nodemailer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    const { email } = req.body;
-
-    // Send email to your waitlist email
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: process.env.WAITLIST_EMAIL,
-      subject: "New Waitlist Signup",
-      text: `New waitlist signup: ${email}`,
-    };
-
+  if (req.method === 'POST') {
     try {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: req.body.email,
+        subject: 'Waitlist Confirmation',
+        text: 'You have been added to the waitlist!',
+      };
+
       await transporter.sendMail(mailOptions);
-      res.status(200).json({ message: "Email added to waitlist" });
-    } catch (error) {
-      res.status(500).json({ error: "Error adding email to waitlist" });
+
+      res.status(200).json({ message: 'Email sent successfully' });
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(500).json({ error: 'An unknown error occurred' });
+      }
     }
   } else {
-    res.status(405).json({ error: "Method not allowed" });
+    res.setHeader('Allow', 'POST');
+    res.status(405).end('Method Not Allowed');
   }
 }
