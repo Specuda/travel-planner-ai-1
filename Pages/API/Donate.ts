@@ -38,7 +38,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       res.status(200).json({ sessionId: session.id });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      if (err instanceof Error) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.status(500).json({ error: 'An unknown error occurred' });
+      }
     }
   } else {
     res.setHeader('Allow', 'POST');
