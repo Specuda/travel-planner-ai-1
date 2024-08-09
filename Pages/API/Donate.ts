@@ -1,19 +1,20 @@
-import Stripe from "stripe";
+import { NextApiRequest, NextApiResponse } from 'next';
+import Stripe from 'stripe';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 if (!stripeSecretKey) {
-  throw new Error("STRIPE_SECRET_KEY is not defined in environment variables");
+  throw new Error('STRIPE_SECRET_KEY is not defined in environment variables');
 }
 
 const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2023-10-16", // Update to the latest API version
+  apiVersion: '2023-10-16', // Update to the latest API version
 });
 
 // Your existing code for handling donations goes here
 // For example, a function to create a donation session
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
       const session = await stripe.checkout.sessions.create({
